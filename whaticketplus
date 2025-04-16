@@ -32,12 +32,12 @@ chown root:root "${PROJECT_ROOT}"/config
 chmod 700 "${PROJECT_ROOT}"/config
 EOF
 source "${PROJECT_ROOT}"/config
- 
+
 # interactive CLI
-inquiry_options
+inquiry_options # nao 
 
 # dependencies related
-system_update
+system_update # si
 system_set_timezone
 system_set_ufw
 system_node_install

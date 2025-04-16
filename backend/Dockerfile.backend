@@ -1,0 +1,10 @@
+FROM node:23-slim
+
+WORKDIR /app
+
+COPY ./build/ /app
+COPY ./infra/ /app/infra
+
+RUN chmod +x /app/infra/backend-setup.sh && /app/infra/backend-setup.sh
+
+CMD ["/app/infra/backend-setup.sh"]

@@ -1,0 +1,53 @@
+services:
+  backend:
+    container_name: backend-app
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./.env
+    environment:
+      DB_HOST: postgres
+      REDIS_URI: redis://:${DB_PASS}@redis:6379
+
+  postgres:
+    container_name: postgres-db
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    env_file:
+      - ./.env
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_USER}
+
+  redis:
+    container_name: redis-db
+    build:
+      context: .
+      dockerfile: Dockerfile.redis
+    env_file:
+      - ./.env
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass postgres
+    volumes:
+      - redis_data:/data
+
+
+volumes:
+  postgres_data:
+  redis_data:
