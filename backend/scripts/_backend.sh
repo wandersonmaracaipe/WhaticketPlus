@@ -8,7 +8,7 @@
 #######################################
 backend_redis_create() {
   print_banner
-  printf "${WHITE} 💻 Criando Redis & Banco Postgres...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Criando Redis ...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
@@ -19,7 +19,7 @@ backend_redis_create() {
   
 EOF
 
- sleep 2
+  sleep 2
 
 }
 
@@ -32,86 +32,43 @@ backend_set_env() {
   print_banner
   printf "${WHITE} 💻 Configurando variáveis de ambiente (backend)...${GRAY_LIGHT}"
   printf "\n\n"
-
   sleep 2
 
-  # ensure idempotency
+  # Caminho do .env base
+  ENV_FILE="../.env"
+
+  # Verifica se o .env existe
+  if [ ! -f "$ENV_FILE" ]; then
+    echo -e "${RED}Arquivo .env não encontrado em $ENV_FILE. Abortando.${GRAY_LIGHT}"
+    exit 1
+  fi
+
+  # Se backend_url não foi setado, tenta obter do .env antigo
+  if [[ -z "$backend_url" ]]; then
+    backend_url=$(grep "^BACKEND_URL=" "$ENV_FILE" | cut -d '=' -f2-)
+  fi
+
+  # Se frontend_url não foi setado, tenta obter do .env antigo
+  if [[ -z "$frontend_url" ]]; then
+    frontend_url=$(grep "^FRONTEND_URL=" "$ENV_FILE" | cut -d '=' -f2-)
+  fi
+
+  # Garante idempotência (evita múltiplos https:// ou paths quebrados)
   backend_url=$(echo "${backend_url/https:\/\/}")
   backend_url=${backend_url%%/*}
-  backend_url=https://$backend_url
+  backend_url="https://$backend_url"
 
-  # ensure idempotency
   frontend_url=$(echo "${frontend_url/https:\/\/}")
   frontend_url=${frontend_url%%/*}
-  frontend_url=https://$frontend_url
+  frontend_url="https://$frontend_url"
 
-sudo su - deploywhaticketplus << EOF
-  cat <<[-]EOF > /home/deploywhaticketplus/whaticket/backend/.env
-NODE_ENV=
-
-# VARIÁVEIS DE SISTEMA
-BACKEND_URL=${backend_url}
-ALLOWED_ORIGINS=${frontend_url}
-FRONTEND_URL=${frontend_url}
-PROXY_PORT=443
-PORT=8080
-
-# CREDENCIAIS BANCO DE DADOS
-DB_TIMEZONE=-03:00
-DB_DIALECT=postgres
-DB_HOST=localhost
-DB_USER=postgres
-DB_PASS=2000@23
-DB_NAME=whaticketwhaticketplus
-DB_PORT=5432
-DB_DEBUG=false
-DB_BACKUP=/www/wwwroot/backup
-
-JWT_SECRET=53pJTvkL9T6q2jYFFKwXgvLAgQahwbb/BM0opll5NZM=
-JWT_REFRESH_SECRET=1/n/QnJtfUphUd9CrXjaxRw+jSAxtRIJwFroFmqrRXY=
-
-REDIS_URI=redis://:${db_pass}@127.0.0.1:6379
-REDIS_OPT_LIMITER_MAX=1
-REGIS_OPT_LIMITER_DURATION=3000
-
-#MASTER KEY PARA TODOS
-MASTER_KEY=
-
-ENV_TOKEN=
-WHATSAPP_UNREADS=
-
-# FACEBOOK/INSTAGRAM CONFIGS
-VERIFY_TOKEN=Whaticket
-FACEBOOK_APP_ID=
-FACEBOOK_APP_SECRET=
-
-# BROWSER SETTINGS
-BROWSER_CLIENT=
-BROWSER_NAME=Chrome
-BROWSER_VERSION=10.0
-VIEW_QRCODE_TERMINAL=true
-
-# EMAIL
-MAIL_HOST=""
-MAIL_USER=""
-MAIL_PASS=""
-MAIL_FROM=""
-MAIL_PORT=587
-
-GERENCIANET_SANDBOX=false
-GERENCIANET_CLIENT_ID=
-GERENCIANET_CLIENT_SECRET=
-GERENCIANET_PIX_CERT=
-GERENCIANET_PIX_KEY=
-
-OPENAI_API_KEY=
-
-
-[-]EOF
-EOF
+  # Copia o .env para a pasta correta
+  sudo cp "$ENV_FILE" /home/deploywhaticketplus/whaticket/backend/.env
+  sudo chown deploywhaticketplus:deploywhaticketplus /home/deploywhaticketplus/whaticket/backend/.env
 
   sleep 2
 }
+
 
 #######################################
 # install_chrome

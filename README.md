@@ -2,7 +2,6 @@
 
 ## 🚀 Whaticket Plus
 
-
 Experimente gratuitamente nosso sistema de tickets via WhatsApp e descubra como a integração com DialogFlow, N8N, Typebot 3, WebHooks, Facebook, Instagram e um poderoso Construtor de Fluxos Nativo para Chatbot pode transformar e potencializar seus atendimentos de forma exponencial!
 
 Integrado ao premiado Typebot 3, N8N e outras ferramentas de alta performance, ele transforma cada atendimento em uma experiência única e surpreendente, elevando sua comunicação a um nível de excelência que cria laços duradouros e conquista a confiança dos seus clientes.
@@ -37,14 +36,16 @@ Já imaginou?
 ## 💿 Instalação
 
 ```bash
-  
+sudo apt update && sudo apt upgrade -y && sudo apt install -y sudo git && \
+sudo rm -rf WhaticketPlus && git clone https://github.com/richwrd/WhaticketPlus && \
+cd WhaticketPlus && sudo chmod +x whaticketplus && sudo ./whaticketplus
 ```
 
 <br /><br />
 
 ## ⭐ Recursos
 
- ✨ Agendamento Recorrente  
+✨ Agendamento Recorrente  
 ✨ API Oficial da Meta  
 ✨ Aplicativo PWA  
 ✨ Áudio Gravado na Hora  
@@ -70,7 +71,7 @@ Já imaginou?
 ✨ Respostas Rápidas com Anexo  
 ✨ SaaS  
 ✨ Setores & Filas  
-✨ Tarefas  
+✨ Tarefas
 
 <br /><br />
 
@@ -88,7 +89,7 @@ Já imaginou?
 🟢 Excluir Contato  
 🟢 Listar Agendamento  
 🟢 Listar Contato  
-🟢 Listar Tags  
+🟢 Listar Tags
 
 <br /><br />
 
@@ -101,6 +102,7 @@ Este projeto não é afiliado, associado, autorizado, endossado ou de qualquer f
 ## 📍 Github
 
 Codigo baseado no Whaticket Community de:
+
 <nav>
   <ul>
     <li><a href="https://github.com/canove/whaticket-community" target="_blank">Cassio Santos no GitHub</a></li>
@@ -108,6 +110,7 @@ Codigo baseado no Whaticket Community de:
 <br /><br />
 
 ## 🛠️ Com as seguintes Ferramentas de Apoio:
+
 <nav>
     <li><a href="https://developers.facebook.com/docs/?locale=pt_BR" target="_blank">API Oficial Meta - WhatsApp, Instagram DM, Facebook (Messenger)</a></li>
     <li><a href="https://github.com/WhiskeySockets/Baileys" target="_blank">Baileys - WhatsApp Web API (free)</a></li>
@@ -129,6 +132,6 @@ Entre em contato através do <a href="https://wa.me/555131916861" target="_blank
 
 <br /><br />
 
-## 
+##
 
-[![Star History Chart](https://api.star-history.com/svg?repos=DEV7Kadu/WhaticketPlus&type=Date)](https://star-history.com/#DEV7Kadu/WhaticketPlus&Date) 
+[![Star History Chart](https://api.star-history.com/svg?repos=DEV7Kadu/WhaticketPlus&type=Date)](https://star-history.com/#DEV7Kadu/WhaticketPlus&Date)
