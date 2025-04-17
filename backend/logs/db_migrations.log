@@ -1,0 +1,6 @@
+
+[4mSequelize CLI [Node: 23.11.0, CLI: 5.5.1, ORM: 5.22.5][24m
+
+Loaded configuration file "config/config.json".
+Using environment "development".
+== 20200717133431-add-uuid-ossp: migrating =======

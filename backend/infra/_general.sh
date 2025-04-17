@@ -28,28 +28,28 @@ readonly NORMAL=$(tput sgr0)
 # Funções reutilizáveis
 print_banner() {
   clear
-  echo -e "${CYAN}"
+  echo -e "${BOLD}${CYAN_LIGHT}"
   echo "╔═══════════════════════════════════════════════╗"
-  echo "║         🚀 INSTALAÇÃO DO BACKEND 🚀          ║"
+  echo "║         🚀 INSTALAÇÃO DO BACKEND 🚀           ║"
   echo "╚═══════════════════════════════════════════════╝"
   echo -e "${GRAY_LIGHT}"
 }
 
-# Function to center and color text
-print_centered() {
-    local input="$1"
-    local color="$2"
-    local term_width=$(tput cols)
-    local text_width=${#input}
+# # Function to center and color text
+# print_centered() {
+#     local input="$1"
+#     local color="$2"
+#     local term_width=$(tput cols)
+#     local text_width=${#input}
 
-    # Strip color codes for width calculation
-    local stripped_input=$(echo -e "$input" | sed 's/\x1b\[[0-9;]*m//g')
-    local stripped_width=${#stripped_input}
+#     # Strip color codes for width calculation
+#     local stripped_input=$(echo -e "$input" | sed 's/\x1b\[[0-9;]*m//g')
+#     local stripped_width=${#stripped_input}
 
-    # Calculate padding
-    local pad_width=$(( (term_width - stripped_width) / 2 ))
-    local padding=$(printf '%*s' "$pad_width")
+#     # Calculate padding
+#     local pad_width=$(( (term_width - stripped_width) / 2 ))
+#     local padding=$(printf '%*s' "$pad_width")
 
-    # Print with color and padding
-    echo -e "${padding}${color}${input}${Color_Off}"
-}
+#     # Print with color and padding
+#     echo -e "${padding}${color}${input}${Color_Off}"
+# }

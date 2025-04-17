@@ -1,8 +1,8 @@
 const { resolve } = require("path");
 
 module.exports = {
-  "config": resolve(__dirname, "automatizaai", "config", "database.js"),
-  "modules-path": resolve(__dirname, "automatizaai", "models"),
-  "migrations-path": resolve(__dirname, "automatizaai", "database", "migrations"),
-  "seeders-path": resolve(__dirname, "automatizaai", "database", "seeds")
+  // "config": resolve(__dirname, "config", "config.json"), //montado via script generate_config
+  "models-path": resolve(__dirname, "whaticketplus", "models"),
+  "migrations-path": resolve(__dirname, "whaticketplus", "database", "migrations"),
+  "seeders-path": resolve(__dirname, "whaticketplus", "database", "seeds")
 };

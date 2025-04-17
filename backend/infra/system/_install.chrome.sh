@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../_general.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source ${SCRIPT_DIR}/../_general.sh
 
 system_chrome_install() {
   print_banner
@@ -13,7 +14,7 @@ system_chrome_install() {
 
   # Adiciona o repositório apenas se ainda não existir
   if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
-    echo "${YELLOW} 🔧 Adicionando repositório do Chrome..."
+    echo -e "${YELLOW} 🔧 Adicionando repositório do Chrome..."
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-key.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
       | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
 

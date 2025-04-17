@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../_general.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source ${SCRIPT_DIR}/../_general.sh
 
 system_puppeteer_dependencies() {
   print_banner

@@ -1,7 +1,7 @@
 #! /bin/bash
-
-source ../_general.sh
-
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "[DEBUG] Caminho do script SYSTEM: ${SCRIPT_DIR}"
+source ${SCRIPT_DIR}/../_general.sh
 
 system_create_user() {
   print_banner
@@ -10,14 +10,29 @@ system_create_user() {
 
   sleep 2
 
-  sudo su - root <<EOF
-  useradd -m -p $(openssl passwd $deploy_password) -s /bin/bash -G sudo deploywhaticketplus
-  usermod -aG sudo deploywhaticketplus
-  mv "${PROJECT_ROOT}"/whaticket.zip /home/deploywhaticketplus/
-EOF
+  # Criar o usuário corretamente com senha criptografada e diretório home
+  sudo useradd -m -p "$(openssl passwd -1 $deploy_password)" -s /bin/bash -G sudo deploywhaticketplus
+
+  # Verifica se o usuário foi criado
+  if id "deploywhaticketplus" &>/dev/null; then
+    echo "✅ Usuário deploywhaticketplus criado com sucesso!"
+  else
+    echo "❌ Falha ao criar o usuário deploywhaticketplus!"
+    exit 1
+  fi
+
+  # Agora, o usuário pode acessar o diretório de trabalho (/app)
+  sudo chown -R deploywhaticketplus:deploywhaticketplus /app
+
+  # Garantir que o usuário tenha permissões de sudo
+  sudo usermod -aG sudo deploywhaticketplus
+
+  # Garantir que o arquivo sudoers permita a execução sem senha
+  grep -q "^deploywhaticketplus ALL=(ALL) NOPASSWD: ALL$" /etc/sudoers || echo "deploywhaticketplus ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
 
   sleep 2
 }
+
 
 system_execute_comand() {
   print_banner
@@ -26,33 +41,32 @@ system_execute_comand() {
 
   sleep 2
 
-  sudo su - root <<EOF
-  usermod -aG sudo deploywhaticketplus
-  sudo apt install ffmpeg
+  # Adicionar o usuário ao grupo sudo, caso não tenha sido feito anteriormente
+  sudo usermod -aG sudo deploywhaticketplus
 
-  grep -q "^deploywhaticketplus ALL=(ALL) NOPASSWD: ALL$" /etc/sudoers || echo "deploywhaticketplus ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  # Instalar o ffmpeg
+  sudo apt-get install -y ffmpeg
 
-  echo "deploywhaticketplus ALL=(ALL) NOPASSWD: ALL" | EDITOR='tee -a' visudo
-  sudo apt install ffmpeg
-
-EOF
-
-  sleep 2 
-}
-
-system_set_timezone() {
-  print_banner
-  printf "${WHITE} 💻 Setando Timezone...${GRAY_LIGHT}"
-  printf "\n\n"
-
-  sleep 2
-
-  sudo su - root <<EOF
-  timedatectl set-timezone America/Sao_Paulo
-EOF
+  # Garantir que a configuração do sudo seja feita corretamente
+  grep -q "^deploywhaticketplus ALL=(ALL) NOPASSWD: ALL$" /etc/sudoers || echo "deploywhaticketplus ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
 
   sleep 2
 }
+
+
+# system_set_timezone() {
+#   print_banner
+#   printf "${WHITE} 💻 Setando Timezone...${GRAY_LIGHT}"
+#   printf "\n\n"
+
+#   sleep 2
+
+#   sudo su - root <<EOF
+#   timedatectl set-timezone America/Sao_Paulo
+# EOF
+
+#   sleep 2
+# }
 
 system_set_ufw() {
   print_banner
@@ -62,8 +76,8 @@ system_set_ufw() {
   sleep 2
 
   sudo su - root <<EOF
-  ufw allow 3000/tcp && 
-  ufw allow 3003/tcp && 
+  ufw allow 3000/tcp 
+  ufw allow 3003/tcp
 EOF
 
   sleep 2

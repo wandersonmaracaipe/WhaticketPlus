@@ -4,17 +4,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
-    restart: always
+    # restart: always
     ports:
       - "3000:3000"
     depends_on:
       - postgres
       - redis
     env_file:
-      - ./.env
+      - ./.env    
+    volumes:
+      - ./logs:/var/log/backend
     environment:
       DB_HOST: postgres
       REDIS_URI: redis://:${DB_PASS}@redis:6379
+    logging:
+      driver: "none"
 
   postgres:
     container_name: postgres-db
@@ -31,7 +35,7 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
 
   redis:
     container_name: redis-db

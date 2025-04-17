@@ -2,9 +2,31 @@ FROM node:23-slim
 
 WORKDIR /app
 
-COPY ./build/ /app
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Instalando sudo e dependências básicas
+RUN apt-get update && apt-get install -y \
+  sudo \
+  git \
+  apt-utils \
+  openssl \
+  passwd \
+  tzdata \
+  curl \
+  gnupg \
+  coreutils \
+  && apt-get clean
+
+# Garantir que o diretório de logs existe e tem as permissões adequadas
+RUN mkdir -p /var/log/backend && chmod 777 /var/log/backend
+
+COPY ./build/ /app/build
 COPY ./infra/ /app/infra
 
-RUN chmod +x /app/infra/backend-setup.sh && /app/infra/backend-setup.sh
+RUN chmod +x ./infra/backend-setup.sh 
 
-CMD ["/app/infra/backend-setup.sh"]
+CMD ["bash", "-c", "./infra/backend-setup.sh 2>&1 | tee /var/log/backend/backend-setup.log"]
+
+

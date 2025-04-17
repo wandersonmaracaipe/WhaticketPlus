@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../_general.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source ${SCRIPT_DIR}/../_general.sh
 
 system_pm2_install() {
   print_banner
@@ -10,6 +11,7 @@ system_pm2_install() {
   sleep 2
 
   sudo su - root <<EOF
+  npm install -g npm
   npm install -g pm2
   pm2 startup ubuntu -u deploywhaticketplus
   env PATH=\$PATH:/usr/bin pm2 startup ubuntu -u deploywhaticketplus --hp /home/deploywhaticketplus

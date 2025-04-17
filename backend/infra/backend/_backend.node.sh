@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source ../_general.sh     
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source ${SCRIPT_DIR}/../_general.sh
+
 
 # 3. Instalar dependências do Node
 backend_node_dependencies_install() {
@@ -8,7 +11,7 @@ backend_node_dependencies_install() {
   echo -e "${YELLOW} 📦 Instalando dependências do backend..."
 
   sudo su - deploywhaticketplus <<EOF
-cd /home/deploywhaticketplus/whaticket/backend
-npm install --force
+cd /app/build
+npm install --legacy-peer-deps
 EOF
 }
