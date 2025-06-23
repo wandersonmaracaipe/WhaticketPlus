@@ -37,7 +37,7 @@ Já imaginou?
 
 ```bash
 sudo apt update && sudo apt upgrade -y && sudo apt install -y sudo git && \
-sudo rm -rf WhaticketPlus && git clone https://github.com/richwrd/WhaticketPlus && \
+sudo rm -rf WhaticketPlus && git clone https://github.com/wandersonmaracaipe/WhaticketPlus && \
 cd WhaticketPlus && sudo chmod +x whaticketplus && sudo ./whaticketplus
 ```
 
